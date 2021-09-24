@@ -197,12 +197,12 @@ namespace VirtualPet
 
         public static void Tick(Object o)
         {
-            //MyPet.Tick();
-            //foreach(var pet in MyShelter.ListOfPets)
-            //{
-            //    pet.Tick();
-            
-            //}
+            MyPet.Tick();
+            foreach (var pet in MyShelter.ListOfPets)
+            {
+                pet.Tick();
+
+            }
         }
 
     }
