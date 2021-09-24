@@ -10,6 +10,7 @@ namespace VirtualPet
         private const int MAXHUNGER = 100;
         private const int MAXBOREDOM = 100;
 
+        public string TypeOfPet { get; set; }
         public string Name { get; set; }
         public string Species { get; set; }
         public int Hunger;
@@ -32,18 +33,16 @@ namespace VirtualPet
         }
         public void SeeDoctor()
         {
-
             SetHealth(Health += 30);
-            //Does this effect anything else
-
         }
         public void Print()
         {
             Console.WriteLine("Name: " + Name);
             Console.WriteLine("");
         }
-        public Pet(string species, string name)
+        public Pet(string species, string name, string typeOfPet)
         {
+            TypeOfPet = typeOfPet;
             Name = name;
             Species = species;
             Hunger = 50;
@@ -112,6 +111,7 @@ namespace VirtualPet
         }
 
         public virtual void GetStatus()  //Move to program.cs
+
         {
             Console.Clear();
             //Console.WriteLine(MyPet.Name + "'s current status:");

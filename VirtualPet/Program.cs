@@ -36,7 +36,9 @@ namespace VirtualPet
                 {
                     case "1":
                         MyPet = NewPet();
-                        //MyShelter.AddPet(MyPet);
+
+                        //NewPet needs to go into the pet list
+                     
                         if(timer == null)
                         {
                             timer = new Timer(Tick, null, 0, 2000);
@@ -44,10 +46,12 @@ namespace VirtualPet
                         break;
                     case "2":
                         MyPet.GetStatus();
+                        //print list of all pets in shelter and give the option to choose 
 
                         break;
                     case "3":
                         PetInteractions();
+                        // print list of all pets in shelter and give option to interact with 1 or multiple pets
                         break;
                     case "4":
                         AdoptPet();
@@ -72,7 +76,10 @@ namespace VirtualPet
             string Species = Console.ReadLine();
             Console.WriteLine("What is the name of your pet?");
             string Name = Console.ReadLine();
-            return new Pet(Species, Name);
+            Console.WriteLine("Is your pet organic or robotic");
+            string TypeOfPet = Console.ReadLine();
+            return new Pet(Species, Name, TypeOfPet);
+            //Need to add Pet Type (robot or organic)
         }
 
 
@@ -104,11 +111,13 @@ namespace VirtualPet
 
         }
 
+
         static void PetInteractions()
         {
             Console.Clear();
             Console.WriteLine("Choose a pet to interact with");
             MyShelter.PetChoiceList();
+            Console.ReadKey();
             Console.WriteLine("How would you like to interact with a pet today? ");
             Console.WriteLine("Enter 1 to play with the pet \nEnter 2 to feed the pet \nEnter 3 to take the pet to the doctor");
             int choice = Convert.ToInt32(Console.ReadLine());
