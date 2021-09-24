@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace VirtualPet
@@ -11,7 +12,7 @@ namespace VirtualPet
         static void Main(string[] args)
         {
 
-
+            MyShelter = new Shelter();
             Console.WriteLine("Welcome to the Shelter!");
             bool Menu = true;
 
@@ -25,8 +26,9 @@ namespace VirtualPet
                 Console.WriteLine("1.Admit a pet");
                 Console.WriteLine("2.Check status of a pet");
                 Console.WriteLine("3.Interact with a pet");
-                Console.WriteLine("4.Adopt a pet");
-                Console.WriteLine("5.Leave the shelter");
+                Console.WriteLine("4.Interact with multiple pets");
+                Console.WriteLine("5.Adopt a pet");
+                Console.WriteLine("6.Leave the shelter");
 
 
 
@@ -36,7 +38,7 @@ namespace VirtualPet
                 {
                     case "1":
                         MyPet = NewPet();
-
+                        MyShelter.AddPet(MyPet);
                         //NewPet needs to go into the pet list
                      
                         if(timer == null)
@@ -45,6 +47,7 @@ namespace VirtualPet
                         }
                         break;
                     case "2":
+                        MyPet = MyShelter.PetChoiceList();
                         MyPet.GetStatus();
                         //print list of all pets in shelter and give the option to choose 
 
@@ -54,10 +57,13 @@ namespace VirtualPet
                         // print list of all pets in shelter and give option to interact with 1 or multiple pets
                         break;
                     case "4":
+                        MultiPetInteractions();
+                        break;
+                    case "5":
                         AdoptPet();
 
                         break;
-                    case "5":
+                    case "6":
                         Console.WriteLine("Thanks for visiting the shelter");
                         Console.WriteLine("Press any key to Exit the game");
                         Console.Clear();
@@ -76,10 +82,21 @@ namespace VirtualPet
             string Species = Console.ReadLine();
             Console.WriteLine("What is the name of your pet?");
             string Name = Console.ReadLine();
-            Console.WriteLine("Is your pet organic or robotic");
+            Console.WriteLine("Is your pet organic or robot");
             string TypeOfPet = Console.ReadLine();
-            return new Pet(Species, Name, TypeOfPet);
-            //Need to add Pet Type (robot or organic)
+            if (TypeOfPet == "robot" || TypeOfPet == "r")
+            {
+                Robot MyRobot = new Robot();
+                MyRobot.Name = Name;
+                MyRobot.Species = Species;
+                return MyRobot;
+            }
+            else
+            {
+                return new Pet(Species, Name, TypeOfPet);
+            }
+            
+          
         }
 
 
@@ -87,6 +104,7 @@ namespace VirtualPet
 
         static void AdoptPet()
         {
+            MyPet = MyShelter.PetChoiceList();
             Console.Clear();
             Console.WriteLine("Would you like to adopt " + MyPet.Name + "?");
             Console.WriteLine("Press 1 for Yes \nPress 2 for No");
@@ -94,7 +112,7 @@ namespace VirtualPet
             int choice = Convert.ToInt32(Console.ReadLine());
             if (choice == 1)
             {
-                //MyPet.Remove();?? remove from pet list in shelter
+                MyShelter.AdoptPet(MyPet);
                 Console.WriteLine("Enjoy your new pet!");
             }
             else if (choice == 2)
@@ -116,7 +134,21 @@ namespace VirtualPet
         {
             Console.Clear();
             Console.WriteLine("Choose a pet to interact with");
-            MyShelter.PetChoiceList();
+            MyPet = MyShelter.PetChoiceList();
+            ListInteractions(MyPet);
+        }
+
+        static void MultiPetInteractions()
+        {
+            List<Pet> pets = MyShelter.PetChoiceMultiList();
+            foreach (var p in pets)
+            {
+                ListInteractions(p);
+            }
+        }
+
+        public static void ListInteractions(Pet p)
+        {
             Console.ReadKey();
             Console.WriteLine("How would you like to interact with a pet today? ");
             Console.WriteLine("Enter 1 to play with the pet \nEnter 2 to feed the pet \nEnter 3 to take the pet to the doctor");
@@ -124,34 +156,34 @@ namespace VirtualPet
 
             if (choice == 1)
             {
-                Console.WriteLine(MyPet.Name + " is " + MyPet.GetBoredom() + "% bored");
+                Console.WriteLine(p.Name + " is " + p.GetBoredom() + "% bored");
 
-                MyPet.Play();
+                p.Play();
 
-                Console.WriteLine(MyPet.Name + " is playing");
-                Console.WriteLine(MyPet.Name + " is now " + MyPet.GetBoredom() + "% bored");
+                Console.WriteLine(p.Name + " is playing");
+                Console.WriteLine(p.Name + " is now " + p.GetBoredom() + "% bored");
                 Console.Read();
 
             }
             else if (choice == 2)
             {
-                Console.WriteLine(MyPet.Name + "'s hunger level is at " + MyPet.GetHunger() + "%");
+                Console.WriteLine(p.Name + "'s hunger level is at " + p.GetHunger() + "%");
 
-                MyPet.Feed();
+                p.Feed();
 
-                Console.WriteLine(MyPet.Name + " is eating");
-                Console.WriteLine(MyPet.Name + " is now " + MyPet.GetHunger() + "% hungry");
+                Console.WriteLine(p.Name + " is eating");
+                Console.WriteLine(p.Name + " is now " + p.GetHunger() + "% hungry");
                 Console.Read();
 
             }
             else if (choice == 3)
             {
-                Console.WriteLine(MyPet.Name + " is " + MyPet.GetHealth() + "% healthy");
+                Console.WriteLine(p.Name + " is " + p.GetHealth() + "% healthy");
 
-                MyPet.SeeDoctor();
+                p.SeeDoctor();
 
-                Console.WriteLine(MyPet.Name + " is getting checked out");
-                Console.WriteLine(MyPet.Name + " is now " + MyPet.GetHealth() + "% healthy");
+                Console.WriteLine(p.Name + " is getting checked out");
+                Console.WriteLine(p.Name + " is now " + p.GetHealth() + "% healthy");
                 Console.Read();
 
             }
@@ -162,6 +194,7 @@ namespace VirtualPet
                 Console.Read();
             }
         }
+
         public static void Tick(Object o)
         {
             //MyPet.Tick();

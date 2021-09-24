@@ -103,7 +103,7 @@ namespace VirtualPet
             this.Boredom = Math.Max(0, Math.Min(MAXBOREDOM, boredom));
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             SetHunger(Hunger += 5);
             SetBoredom(Boredom += 5);
@@ -113,6 +113,7 @@ namespace VirtualPet
         public virtual void GetStatus()  //Move to program.cs
 
         {
+
             Console.Clear();
             //Console.WriteLine(MyPet.Name + "'s current status:");
             Console.WriteLine("Hunger: " + GetHunger());

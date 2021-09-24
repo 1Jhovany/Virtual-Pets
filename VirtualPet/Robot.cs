@@ -8,6 +8,9 @@ namespace VirtualPet
 {
     public class Robot : Pet
     {
+        public string OilType { get; set; }
+        public DateTime LastMaintenance { get; set; }
+
         public int Battery()
         {
             return GetHealth();
@@ -28,6 +31,13 @@ namespace VirtualPet
             Boredom -= 10;
             Health -= 5;
         }
+
+        public override void Tick()
+        {
+            //base.Tick();
+            ChargeLvl();
+        }
+
         public override void GetStatus()
         {
             Console.WriteLine("ChargeLvl: " + GetHunger());
